@@ -10,18 +10,35 @@ const app = express();
 
 app.use(express.json());
 
-mongoose.connect(
-  "mongodb+srv://nakul:nakul@cluster0.xlejzoh.mongodb.net/test",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+//mongodb connection
+const mongoDB = "mongodb://127.0.0.1/choozy";
+
+mongoose.connect(mongoDB, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", function () {
   console.log("Connected successfully");
-  const Users = db.collection("Users");
-  const Posts = db.collection("Posts");
+});
+
+//routes
+app.get("/posts", (req, res) => {
+  Posts.find({}, (err, data) => {
+    console.log(data);
+    res.send(data);
+  });
+});
+
+app.get("/user", (req, res) => {
+  User.findOne({ username: "nakul" }, (err, data) => {
+    console.log(data);
+    res.send(data);
+  });
+});
+
+app.listen(5000, () => {
+  console.log("successful");
 });
