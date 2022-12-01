@@ -29,16 +29,27 @@ app.get("/posts", (req, res) => {
   Posts.find({}, (err, data) => {
     console.log(data);
     res.send(data);
+  }).sort($date);
+});
+
+app.get("/login", (req, res) => {
+  User.findOne(
+    { username: req.username, password: req.password },
+    (err, data) => {
+      console.log(data);
+      res.send(data);
+    }
+  );
+});
+
+app.post("/signup", (req, res) => {
+  User.create({
+    username: "abhi",
+    password: "Tanmay",
   });
 });
 
-app.get("/user", (req, res) => {
-  User.findOne({ username: "nakul" }, (err, data) => {
-    console.log(data);
-    res.send(data);
-  });
-});
-
+app.get("/");
 app.listen(5000, () => {
-  console.log("successful");
+  console.log("successfull");
 });
